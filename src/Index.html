@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ecoLOGI - Sustentabilidade</title>
+  <style>
+    :root {
+      --v-escuro: #163014;
+      --v-base: #2d5a27;
+      --v-brilho: #5dbb52;
+      --v-luz: #86d97c;
+      --fundo: #d8e0d8;
+    }
+
+    body {
+      background-color: var(--fundo);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    /* ALINHAMENTO DOS LOGOS NAS EXTREMIDADES */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #edf2ed;
+      // width: 100%;
+    }
+
+    .img-logo-projeto, .img-logo-escola {
+      height: 100px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    h2 {
+      color: var(--v-escuro);
+      margin-bottom: 25px;
+      font-size: 1.4rem;
+    }
+
+    /* BOTÃO CILÍNDRICO METALIZADO PROFISSIONAL */
+    button {
+      width: 100%;
+      padding: 18px;
+      margin: 12px 0;
+      border: 1px solid var(--v-escuro);
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      background: linear-gradient(to bottom, 
+        #1b3318 0%, 
+        #2d5a27 20%, 
+        #5dbb52 50%, 
+        #2d5a27 80%, 
+        #1b3318 100%);
+      box-shadow: 0 5px 0 #122410, 0 8px 15px rgba(0,0,0,0.3);
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+      transition: all 0.1s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.08);
+    }
+
+    button:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #122410;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 5px;
+      color: var(--v-escuro);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #e0e8e0;
+      border-radius: 10px;
+      box-sizing: border-box;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: var(--v-brilho);
+      outline: none;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .card-pergunta {
+      text-align: left;
+      animation: fadeIn 0.5s;
+    }
+
+    .opcoes-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .btn-opcao {
+      background: #f0f4f0 !important;
+      color: var(--v-escuro) !important;
+      border: 2px solid var(--v-base) !important;
+      text-transform: none !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+      padding: 15px !important;
+    }
+    .btn-opcao:hover {
+      background: var(--v-brilho) !important;
+      color: white !important;
+    }
+    #cronometro {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #d32f2f;
+      margin-bottom: 10px;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <img src="<?= logoProjeto ?>" class="img-logo-projeto" alt="ecoLOGI">
+      <img src="<?= logoEscola ?>" class="img-logo-escola" alt="Monsenhor Domingos">
+    </header>
+
+    <div id="tela-inicial">
+      <h2>Inscrição do Aluno</h2>
+      
+      <div class="form-group">
+        <label>Nome Completo:</label>
+        <input type="text" id="nome" placeholder="Digite seu nome completo">
+      </div>
+
+      <div class="form-group">
+        <label>E-mail Acadêmico:</label>
+        <input type="email" id="email" placeholder="seuemail@gmail.com">
+      </div>
+
+      <div class="form-group" style="display: flex; gap: 10px;">
+        <div style="flex: 1;">
+          <label>Turma:</label>
+          <select id="turma">
+            <option value="" disabled selected>Selecione</option>
+            <option value="1º Ano">1º Ano</option>
+            <option value="2º Ano">2º Ano</option>
+            <option value="3º Ano">3º Ano</option>
+          </select>
+        </div>
+        <div style="flex: 1;">
+          <label>Turno:</label>
+          <select id="turno">
+            <option value="" disabled selected>Selecione</option>
+            <option value="Manhã">Manhã</option>
+            <option value="Tarde">Tarde</option>
+            <option value="Noite">Noite</option>
+          </select>
+        </div>
+      </div>
+
+      <button onclick="iniciarQuiz()">Começar Desafio</button>
+    
+    </div>
+    <!-- TELA DE VALIDAÇÃO -->
+    <div id="tela-validacao" class="hidden">
+      <h2>Verifique seu E-mail</h2>
+      <p>Enviamos um código de 6 dígitos para o e-mail informado. Ele expira em 5 minutos.</p>
+      
+      <div class="form-group">
+        <label>Código de Verificação:</label>
+        <input type="text" id="input-codigo" placeholder="000000" maxlength="6" style="text-align: center; font-size: 1.5rem; letter-spacing: 5px;">
+      </div>
+      
+      <button onclick="confirmarCodigo()">Validar e Iniciar</button>
+      <p id="msg-erro-validacao" style="color: red; font-size: 0.9rem; margin-top: 10px;"></p>
+    </div>
+
+    <div id="tela-quiz" class="hidden">
+      <div id="pergunta-container"></div>
+    </div>
+  </div>
+
+  <script>
+    // Objeto global para armazenar os dados do aluno durante a sessão
+    let dadosUsuario = {};
+
+    /**
+     * PASSO 1: Valida os campos e solicita o envio do código por e-mail
+     */
+    function iniciarQuiz() {
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const turma = document.getElementById('turma').value;
+      const turno = document.getElementById('turno').value;
+      
+      // Verificação de campos obrigatórios
+      if(!nome || !email || !turma || !turno) {
+        alert("⚠️ Todos os campos são obrigatórios!");
+        return;
+      }
+
+      // Armazena temporariamente os dados
+      dadosUsuario = { nome, email, turma, turno };
+
+      // Feedback visual no botão
+      const btn = event.target;
+      const textoOriginal = btn.innerText;
+      btn.innerText = "Enviando código...";
+      btn.disabled = true;
+
+      // Chama o Code.gs para disparar o e-mail
+      google.script.run
+        .withSuccessHandler(function() {
+          document.getElementById('tela-inicial').classList.add('hidden');
+          document.getElementById('tela-validacao').classList.remove('hidden');
+          btn.innerText = textoOriginal;
+          btn.disabled = false;
+        })
+        .withFailureHandler(function(err) {
+          let msg = "Erro ao processar o acesso. Tente novamente.";
+                
+          // Captura os erros específicos enviados pelo servidor
+          if (err.message.includes("FORMATO_INVALIDO")) {
+              msg = "⚠️ E-mail inválido! Você deve utilizar seu e-mail institucional oficial (@aluno.mg.gov.br).";
+          } 
+          else if (err.message.includes("EMAIL_JA_UTILIZADO")) {
+            msg = "❌ Este e-mail já realizou o desafio ecoLOGI. Cada aluno só pode participar uma única vez!";
+          } 
+          else if (err.message.includes("LIMITE_DIARIO_ATINGIDO")) {
+            msg = "⚠️ O limite de acessos de hoje foi atingido. Por favor, tente novamente amanhã.";
+          }
+                
+          alert(msg);
+          btn.disabled = false;
+          btn.innerText = "Começar Desafio";
+        })
+        .enviarCodigoVerificacao(email);
+    }
+
+    /**
+     * PASSO 2: Valida o código digitado pelo aluno
+     */
+    function confirmarCodigo() {
+      const codigo = document.getElementById('input-codigo').value.trim();
+      const msgErro = document.getElementById('msg-erro-validacao');
+      
+      if(!codigo || codigo.length < 6) {
+        msgErro.innerText = "Digite o código de 6 dígitos.";
+        return;
+      }
+
+      msgErro.innerText = "Validando...";
+
+      // Chama o Code.gs para conferir o código e o tempo de expiração
+      google.script.run
+        .withSuccessHandler(function(resultado) {
+          if(resultado.sucesso) {
+            // Se o código estiver OK, limpa erro e vai para o Quiz
+            document.getElementById('tela-validacao').classList.add('hidden');
+            document.getElementById('tela-quiz').classList.remove('hidden');
+            document.getElementById('pergunta-container').innerHTML = "<h3>⏳ Carregando seu desafio...</h3>";
+            
+            // Agora sim, busca as perguntas oficiais do Banco
+            carregarPerguntasOficiais();
+          } else {
+            // Exibe a mensagem de erro (Errado ou Expirado)
+            msgErro.innerText = "❌ " + resultado.msg;
+          }
+        })
+        .validarCodigo(dadosUsuario.email, codigo);
+    }
+
+    /**
+     * PASSO 3: Carrega as perguntas após validação total
+     */
+    function carregarPerguntasOficiais() {
+      google.script.run
+        .withSuccessHandler(function(res) {
+          // Se o servidor retornar o objeto de erro que criamos antes
+          if (res && res.erro) {
+            document.getElementById('pergunta-container').innerHTML = 
+              `<p style="color:red">⚠️ Erro: ${res.mensagem}</p>
+               <button onclick="carregarPerguntasOficiais()" class="btn-opcao">Tentar Novamente</button>`;
+            return;
+          }
+          
+          // Verifica se o que veio é realmente uma lista de perguntas
+          if (Array.isArray(res) && res.length > 0) {
+            exibirPerguntas(res);
+          } else {
+            document.getElementById('pergunta-container').innerHTML = 
+              `<p style="color:red">⚠️ O banco de perguntas retornou vazio ou inválido.</p>
+               <button onclick="carregarPerguntasOficiais()" class="btn-opcao">Tentar Novamente</button>`;
+          }
+        })
+        .withFailureHandler(function(err) {
+          document.getElementById('pergunta-container').innerHTML = 
+            `<p style="color:red">⚠️ Falha de comunicação com o Google Script.</p>
+             <button onclick="carregarPerguntasOficiais()" class="btn-opcao">Tentar Novamente</button>`;
+        })
+        .obterPerguntasDoBanco();
+    }
+
+    /**
+     * PASSO 4: Renderiza as perguntas na tela
+     */
+    let perguntasQuiz = [];
+    let indiceAtual = 0;
+    let pontuacao = 0;
+    let tempoRestante = 30; 
+    let intervaloCronometro;
+
+    function exibirPerguntas(perguntas) {
+      perguntasQuiz = perguntas;
+      indiceAtual = 0;
+      pontuacao = 0;
+      mostrarQuestao();
+    }
+
+function mostrarQuestao() {
+      if (indiceAtual >= perguntasQuiz.length) {
+        finalizarDesafio();
+        return;
+      }
+
+      const q = perguntasQuiz[indiceAtual];
+      const container = document.getElementById('pergunta-container');
+      
+      // Criar botões enviando o valor do ponto para a função
+      const htmlOpcoes = q.opcoes.map(opt => {
+        const textoEscapado = opt.texto.toString().replace(/'/g, "\\'");
+        return `<button class="btn-opcao" onclick="verificarResposta(${opt.pontos})">${opt.texto}</button>`;
+      }).join('');
+
+      container.innerHTML = `
+        <div id="cronometro" style="color:red; font-weight:bold; margin-bottom:10px;">Tempo: 30s</div>
+        
+        <div style="background: #163014; color: white; padding: 5px 15px; border-radius: 20px; display: inline-block; font-size: 0.8rem; margin-bottom: 10px; text-transform: uppercase;">
+          ${q.tema || 'Geral'}
+        </div>
+
+        <div class="card-pergunta">
+          <p><strong>Questão ${indiceAtual + 1} de 15:</strong></p>
+          <p style="font-size: 1.1rem; color: #163014; font-weight: 600;">${q.pergunta}</p>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+            ${htmlOpcoes}
+          </div>
+        </div>
+      `;
+      
+      iniciarCronometro();
+    }
+
+    // Agora recebe a quantidade de pontos daquela alternativa
+    function verificarResposta(pontosGanhos) {
+      clearInterval(intervaloCronometro);
+      
+      // Acumula os pontos (ex: se a resposta valia 10, soma 10)
+      pontuacao += parseInt(pontosGanhos);
+      
+      proximaQuestao();
+    }
+
+  
+  function finalizarDesafio() {
+      clearInterval(intervaloCronometro);
+      const container = document.getElementById('pergunta-container');
+      
+      container.innerHTML = `
+        <div style="padding: 20px; text-align: center;">
+          <h2 style="color: #2d5a27;">🏁 Desafio Concluído!</h2>
+          <p>Muito bem, <strong>${dadosUsuario.nome}</strong>!</p>
+          <div style="margin: 20px 0; padding: 20px; background: #f0f4f0; border-radius: 15px; border: 2px solid #2d5a27;">
+            <span style="font-size: 1.2rem; display: block;">Sua Pontuação Total:</span>
+            <span style="font-size: 3rem; font-weight: bold; color: #2d5a27;">${pontuacao}</span>
+          </div>
+          <p id="status-salvamento">Salvando seu desempenho na rede...</p>
+          
+          <!-- Botão para encerrar o App -->
+          <button id="btn-sair" onclick="fecharApp()" style="margin-top: 20px; display: none;">Encerrar e Sair</button>
+        </div>
+      `;
+      
+      // Salva na planilha de resultados
+      google.script.run
+        .withSuccessHandler(() => {
+          document.getElementById('status-salvamento').innerHTML = "✅ Resultado registrado com sucesso!";
+          document.getElementById('btn-sair').style.display = "block"; // Só mostra o botão após salvar
+        })
+        .salvarResultadoFinal(dadosUsuario, pontuacao);
+    }
+
+    /**
+     * Função para encerrar o aplicativo
+     */
+    function fecharApp() {
+      // Redireciona para uma página em branco ou site da escola
+      // Nota: window.close() geralmente é bloqueado em Web Apps do Google
+      window.top.location.href = "about:blank"; 
+      // Se preferir, troque "about:blank" pela URL do site da sua escola
+    }
+      
+    function iniciarCronometro() {
+      clearInterval(intervaloCronometro);
+      tempoRestante = 30;
+      const display = document.getElementById('cronometro');
+      
+      intervaloCronometro = setInterval(() => {
+        tempoRestante--;
+        display.innerText = `Tempo: ${tempoRestante}s`;
+        
+        if (tempoRestante <= 0) {
+          clearInterval(intervaloCronometro);
+          proximaQuestao(); // Pula se o tempo acabar
+        }
+      }, 1000);
+    }
+
+    function proximaQuestao() {
+      indiceAtual++;
+      mostrarQuestao();
+    }
+
+  </script>
+</body>
+</html>
